@@ -49,73 +49,98 @@
 #include "hbapierr.h"
 
 HB_FUNC( STRZERO )
-{
-   int iParams = hb_pcount();
+	{
+		int iParams          = hb_pcount();
+      int iLen             = hb_parni(2);
+		const char *pString  = hb_parc(1);         
+		PHB_ITEM pNumber 	   = hb_param( 1, HB_IT_NUMERIC );
+		PHB_ITEM pWidth  	   = NULL;
+		PHB_ITEM pDec    	   = NULL;
+      
 
-   if( iParams >= 1 && iParams <= 3 )
-   {
-      PHB_ITEM pNumber = hb_param( 1, HB_IT_NUMERIC );
-      PHB_ITEM pWidth  = NULL;
-      PHB_ITEM pDec    = NULL;
+		if( iParams >= 1 && iParams <= 3 )
+		{
+			//const char *pString  = hb_parc(1);         
+			//PHB_ITEM pNumber 	   = hb_param( 1, HB_IT_NUMERIC );
+			//PHB_ITEM pWidth  	   = NULL;
+			//PHB_ITEM pDec    	   = NULL;
 
-      if( iParams >= 2 )
-      {
-         pWidth = hb_param( 2, HB_IT_NUMERIC );
-         if( pWidth == NULL )
-            pNumber = NULL;
-         else if( iParams >= 3 )
-         {
-            pDec = hb_param( 3, HB_IT_NUMERIC );
-            if( pDec == NULL )
+			if( iParams >= 2 )
+			{
+				pWidth = hb_param( 2, HB_IT_NUMERIC );
+				if( pWidth == NULL )
                pNumber = NULL;
-         }
-      }
+				else if( iParams >= 3 )
+				{
+					pDec = hb_param( 3, HB_IT_NUMERIC );
+					if( pDec == NULL )
+						pNumber = NULL;
+				}
+			}
 
-      if( pNumber )
-      {
-         char * szResult = hb_itemStr( pNumber, pWidth, pDec );
-
-         if( szResult )
-         {
-            HB_SIZE nPos = 0;
-
-            while( szResult[ nPos ] != '\0' && szResult[ nPos ] != '-' )
-               nPos++;
-
-            if( szResult[ nPos ] == '-' )
-            {
-               /* NOTE: Negative sign found, put it to the first position */
-
-               szResult[ nPos ] = ' ';
-
-               nPos = 0;
-               while( szResult[ nPos ] != '\0' && szResult[ nPos ] == ' ' )
-                  szResult[ nPos++ ] = '0';
-
-               szResult[ 0 ] = '-';
+			if(pNumber || pString)
+			{
+        
+            char *szResult = hb_itemStr( pNumber, pWidth, pDec ); 
+            if (pString){
+               char dest[200];
+               szResult = strdup(pString);
+               int nx   = (int)strlen(szResult);               
+               memset(dest, 32, iLen-nx); 
+               dest[iLen-nx] = '\0';                  
+               strcat(dest, szResult);                              
+               szResult = dest;               
             }
-            else
-            {
-               /* Negative sign not found */
+            //cout << endl;
+            //printf("%i", (int)strlen(szResult));
+            
+				if( szResult )
+				{
+					HB_SIZE nPos = 0;
 
-               nPos = 0;
-               while( szResult[ nPos ] != '\0' && szResult[ nPos ] == ' ' )
-                  szResult[ nPos++ ] = '0';
-            }
+					while( szResult[ nPos ] != '\0' && szResult[ nPos ] != '-' ){
+                  //printf("\t%d", szResult[nPos]);
+						nPos++;
+               }
 
-            hb_retc_buffer( szResult );
-         }
-         else
-            hb_retc_null();
-      }
-      else
-#ifdef HB_CLP_STRICT
-         /* NOTE: In CA-Cl*pper StrZero() is written in Clipper, and will call
-                  Str() to do the job, the error (if any) will also be thrown
-                  by Str().  [vszakats] */
-         hb_errRT_BASE_SubstR( EG_ARG, 1099, NULL, "STR", HB_ERR_ARGS_BASEPARAMS );
-#else
-         hb_errRT_BASE_SubstR( EG_ARG, 6003, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
-#endif
-   }
-}
+					if( szResult[ nPos ] == '-' )
+					{
+						// NOTE: Negative sign found, put it to the first position 
+
+						szResult[ nPos ] = ' ';
+
+						nPos = 0;
+						while( szResult[ nPos ] != '\0' && szResult[ nPos ] == ' ' )
+							szResult[ nPos++ ] = '0';
+
+						szResult[ 0 ] = '-';
+					}
+					else
+					{
+						// Negative sign not found 
+
+						nPos = 0;
+						while( szResult[ nPos ] != '\0' && szResult[ nPos ] == ' ' )
+							szResult[ nPos++ ] = '0';
+					}               
+               //printf("\t%s", pString);
+               //printf("\t%s", szResult);
+					hb_retc_buffer( szResult );
+				}
+				else                  
+                  //hb_retc_buffer( pString );
+						hb_retc_null();
+			}
+			else
+			
+	#ifdef HB_CLP_STRICT
+				// NOTE: In CA-Cl*pper StrZero() is written in Clipper, and will call
+				//			Str() to do the job, the error (if any) will also be thrown
+				//			by Str().  [vszakats]
+				hb_errRT_BASE_SubstR( EG_ARG, 1099, NULL, "STR", HB_ERR_ARGS_BASEPARAMS );
+	#else
+				hb_errRT_BASE_SubstR( EG_ARG, 6003, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
+	#endif
+		}
+
+	}
