@@ -32,5 +32,5 @@ echo $HB_BUILD_ADDONS
 #HB_WITH_ZLIB=C:\zlib (defaults to locally hosted copy if not found)
 
 make
-make install
+sudo make install
 #make install DESTDIR=/home/vcatafesta/build/harbour-3.4
