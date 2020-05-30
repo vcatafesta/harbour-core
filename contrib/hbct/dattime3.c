@@ -46,6 +46,7 @@
  */
 
 /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
+
 #ifndef _SVID_SOURCE
 #define _SVID_SOURCE
 #endif
@@ -154,7 +155,8 @@ HB_FUNC( SETTIME )
       lNewTime = iTime[ 0 ] * 3600 + iTime[ 1 ] * 60 + iTime[ 2 ];
       tm       = time( NULL );
       tm      += lNewTime - ( tm % 86400 );
-      fResult  = stime( &tm ) == 0;
+      //fResult  = stime( &tm ) == 0;
+      fResult  = clock_settime( CLOCK_REALTIME, &tm ) == 0;
 #elif defined( HB_OS_DOS )
       union REGS regs;
       regs.h.ah = 45;
@@ -197,7 +199,8 @@ HB_FUNC( SETDATE )
          lNewDate = lDate - hb_dateEncode( 1970, 1, 1 );
          tm       = time( NULL );
          tm       = lNewDate * 86400 + ( tm % 86400 );
-         fResult  = stime( &tm ) == 0;
+         //fResult  = stime( &tm ) == 0;
+         fResult  = clock_settime( CLOCK_REALTIME, &tm ) == 0;
 #elif defined( HB_OS_DOS )
          union REGS regs;
          regs.h.ah        = 43;
