@@ -74,7 +74,8 @@ HB_FUNC( FT_SETTIME )
       lNewTime = iHour * 3600 + iMinute * 60 + iSeconds;
       tm       = time( NULL );
       tm      += lNewTime - ( tm % 86400 );
-      fResult  = stime( &tm ) == 0;
+      //fResult  = stime( &tm ) == 0;
+      fResult  = clock_settime(CLOCK_REALTIME, &tm ) == 0;
    }
 #elif defined( HB_OS_DOS )
    {

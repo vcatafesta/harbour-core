@@ -64,7 +64,8 @@ HB_FUNC( FT_SETDATE )
       lNewDate = lDate - hb_dateEncode( 1970, 1, 1 );
       tm       = time( NULL );
       tm       = lNewDate * 86400 + ( tm % 86400 );
-      fResult  = stime( &tm ) == 0;
+      //fResult  = stime( &tm ) == 0;
+      fResult  = clock_settime( CLOCK_REALTIME, &tm ) == 0;
    }
 #elif defined( HB_OS_DOS )
    {
