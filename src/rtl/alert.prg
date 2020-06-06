@@ -44,9 +44,42 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
 
 #endif
 
-   IF ! HB_ISSTRING( cMessage )
-      RETURN NIL
-   ENDIF
+   switch valtype(cMessage)
+   case "A"
+      if len( cMessage ) = 0
+         cMessage := "{}"
+	 exit
+      endif
+      switch valtype(cMessage[1])
+      case "C"
+         cMessage := cMessage[1]
+         exit
+      case "N"
+         cMessage := alltrim( str( cMessage[1] ) )
+         exit
+      case "D"
+         cMessage := Dtoc( cMessage[1] )
+         exit
+      case "L"
+	 cMessage := iif( cMessage[1] == .t., ".T.", ".F" )
+         exit
+      otherwise
+         return nil
+      endswitch
+   case "C"
+      exit
+   case "N"
+      cMessage := alltrim( str( cMessage ) )
+      exit
+   case "D"
+      cMessage := dtoc( cMessage )
+      exit
+   case "L"
+      cMessage := iif( cMessage == .t., ".T.", ".F" )
+      exit
+   otherwise
+      return nil
+   endswitch
 
    cMessage := StrTran( cMessage, ";", Chr( 10 ) )
 
