@@ -1,5 +1,7 @@
 
 #!/bin/bash
+#export HB_COMPILER=clang
+#export HB_COMPILER=gcc
 export HB_INSTALL_PREFIX=/usr
 export HB_BUILD_VERBOSE=yes
 export HB_WITH_X11=no
@@ -18,7 +20,19 @@ echo $HB_BUILD_MODE
 echo $HB_BUILD_CONTRIBS
 echo $HB_BUILD_ADDONS
 
-#export HB_BUILD_PKG=yes
+# How to Create Packages for Distribution
+# Source .tgz on *nix
+	# package/mpkg_src.sh
+
+#Binary .tgz on *nix
+	#export HB_BUILD_PKG=yes
+	#make clean install
+
+#Binary .deb on Linux
+	#fakeroot debian/rules binary
+
+#Binary .rpm on Linux
+	#package/mpkg_rpm.sh
 
 
 #HB_WITH_CURSES= (on \*nix systems and DJGPP, auto-detected on both)
