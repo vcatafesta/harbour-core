@@ -1,4 +1,15 @@
 /*
+function main()
+   a := Array(10)
+   afill(a, "VILMAR")
+   ? hb_strformat("%s %t %s", "ITEM", 8, "VALOR")
+   ? hb_strformat("%s", Repl("=",20))
+   for i := 1 to Len(a)
+      ? hb_strformat("%05d%t%s", i, 8, a[i] + '-' + StrZero(i, 5))
+  next
+*/
+
+/*
  * hb_StrFormat() function
  *
  * Copyright 2008 Mindaugas Kavaliauskas <dbtopas at dbtopas.lt>
@@ -100,7 +111,7 @@ PHB_ITEM hb_strFormat( PHB_ITEM pItemReturn, PHB_ITEM pItemFormat, int iCount, P
    const char  *pFmt, *pFmtEnd, *pFmtSave;
    int         i, iParam, iParamNo, iWidth, iDec;
    HB_SIZE     nSize;
-   HB_BOOL     fLeftAlign, fForceSign, fPadZero, fSpaceSign, fSign;
+   HB_BOOL     fLeftAlign, fForceSign, fPadZero, fSpaceSign, fSign, fTab;
 
    pFmt = hb_itemGetCPtr( pItemFormat );
    nSize = hb_itemGetCLen( pItemFormat );
@@ -190,7 +201,7 @@ PHB_ITEM hb_strFormat( PHB_ITEM pItemReturn, PHB_ITEM pItemFormat, int iCount, P
 
       /* Parse specifier */
       if( *pFmt == 'c' || *pFmt == 'd' || *pFmt == 'x' || *pFmt == 'X' ||
-          *pFmt == 'f' || *pFmt == 's' )
+          *pFmt == 'f' || *pFmt == 's' || *pFmt == 't' )
       {
          if( iParamNo == -1 )
             iParamNo = ++iParam;
@@ -222,7 +233,6 @@ PHB_ITEM hb_strFormat( PHB_ITEM pItemReturn, PHB_ITEM pItemFormat, int iCount, P
             }
             break;
          }
-
          case 'd':
          case 'x':
          case 'X':
@@ -450,6 +460,20 @@ PHB_ITEM hb_strFormat( PHB_ITEM pItemReturn, PHB_ITEM pItemFormat, int iCount, P
             break;
          }
 
+         case 't': //27.07.2021
+         {
+            if( pItem && HB_IS_NUMERIC( pItem ) )
+            {
+               const char * pStr = NULL;
+               HB_ISIZ nSize = hb_itemGetNS( pItem );
+               //printf("%d", nSize);
+               if( nSize > 0 )
+                  for( i = 0; i < nSize; i++ )
+                     bufadd( &buffer, " ", 1 );
+            }
+            break;
+         }
+
          case 's':
          {
             const char * pStr = hb_itemGetCPtr( pItem );
@@ -514,3 +538,4 @@ HB_FUNC( HB_STRFORMAT )
    else
       hb_errRT_BASE_SubstR( EG_ARG, 1099, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }
+
