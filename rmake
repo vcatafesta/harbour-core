@@ -1,5 +1,36 @@
-
 #!/bin/bash
+#Linux (.deb based distros: Debian, Ubuntu)
+#You'll need these base packages to build/package/test/use Harbour:
+#sudo apt-get install bash git gcc binutils fakeroot debhelper valgrind upx uncrustify
+#sudo apt-get install libncurses-dev
+#sudo apt-get install libslang2-dev OR
+#sudo apt-get install libslang1-dev
+#sudo apt-get install libx11-dev
+#sudo apt-get install libgpm-dev OR
+#sudo apt-get install libgpmg1-dev
+#sudo apt-get install liballegro4.2-dev
+#sudo apt-get install libcairo2-dev
+#sudo apt-get install libcups2-dev
+#sudo apt-get install libcurl4-openssl-dev OR
+#sudo apt-get install libcurl4-gnutls-dev
+#sudo apt-get install firebird2.1-dev OR
+#sudo apt-get install libfirebird2.0-dev
+#sudo apt-get install libfreeimage-dev
+#sudo apt-get install libgd2-xpm-dev OR
+#sudo apt-get install libgd-xpm-dev
+#sudo apt-get install libgs-dev
+#sudo apt-get install libmagic-dev
+#sudo apt-get install libmysqlclient15-dev
+#sudo apt-get install unixodbc-dev
+#sudo apt-get install libpq-dev
+#sudo apt-get install libqt5-dev
+#sudo apt-get install libbz2-dev
+#sudo apt-get install zlib1g-dev
+#sudo apt-get install libpcre3-dev
+#sudo apt-get install libsqlite3-dev
+#sudo apt-get install libexpat1-dev
+
+
 #export HB_COMPILER=clang
 #export HB_COMPILER=gcc
 export HB_INSTALL_PREFIX=/usr
@@ -7,7 +38,7 @@ export HB_BUILD_VERBOSE=yes
 export HB_WITH_X11=no
 export HB_BUILD_STRIP=bin
 export HB_BUILD_ADDONS=yes
-export HB_BUILD_MODE=cpp
+export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
 #export HB_BUILD_MODE=c
 export HB_INSTALL_IMPLIB=yes
 export HB_BUILD_CONTRIB_DYN=yes
