@@ -461,6 +461,7 @@ DECLARE HBClass ;
    #xcommand EXPORTED:   =>    nScope := HB_OO_CLSTP_EXPORTED ; HB_SYMBOL_UNUSED( nScope )
    #xcommand EXPORT:     =>    nScope := HB_OO_CLSTP_EXPORTED ; HB_SYMBOL_UNUSED( nScope )
    #xcommand VISIBLE:    =>    nScope := HB_OO_CLSTP_EXPORTED ; HB_SYMBOL_UNUSED( nScope )
+   #xcommand PUBLIC:     =>    nScope := HB_OO_CLSTP_EXPORTED ; HB_SYMBOL_UNUSED( nScope )
    #xcommand HIDDEN:     =>    nScope := HB_OO_CLSTP_HIDDEN   ; HB_SYMBOL_UNUSED( nScope )
    #xcommand PROTECTED:  =>    nScope := HB_OO_CLSTP_PROTECTED; HB_SYMBOL_UNUSED( nScope )
 
