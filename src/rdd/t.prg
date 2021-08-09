@@ -1,0 +1,5 @@
+REQUEST DBPX 
+USE empresa INDEX Name, Address NEW VIA "DBPX"
+
+//REQUEST DBPX RDDSETDEFAULT( "DBPX" )
+//USE Customers INDEX Name, Address NEW

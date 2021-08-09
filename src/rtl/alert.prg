@@ -78,7 +78,8 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
       cMessage := iif( cMessage == .t., ".T.", ".F" )
       exit
    otherwise
-      return nil
+      cMessage := hb_valtostr(cMessage)
+      exit
    endswitch
 
    cMessage := StrTran( cMessage, ";", Chr( 10 ) )
