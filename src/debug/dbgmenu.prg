@@ -60,10 +60,10 @@ FUNCTION __dbgBuildMenu( oDebugger )  // Builds the debugger pulldown menu
    LOCAL oMenu
 
    MENU oMenu
-      MENUITEM " ~File "
+      MENUITEM " ~Arquivo "
       MENU
-         MENUITEM " ~Open..."         ACTION oDebugger:Open()
-         MENUITEM " ~Resume"          ACTION oDebugger:Resume()
+         MENUITEM " ~Abrir..."         ACTION oDebugger:Open()
+         MENUITEM " ~Resumir"          ACTION oDebugger:Resume()
          MENUITEM " O~S Shell"        ACTION oDebugger:OSShell()
          SEPARATOR
          MENUITEM " e~Xit    Alt-X "  ACTION oDebugger:Quit()

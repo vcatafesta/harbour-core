@@ -102,10 +102,9 @@ HB_FUNC( HB_DEFAULT )
 {
    PHB_ITEM pDefault = hb_param( 2, HB_IT_ANY );
 
-   if( pDefault &&
-       s_hb_itemTypeBasic( hb_param( 1, HB_IT_ANY ) ) !=
-       s_hb_itemTypeBasic( pDefault ) )
-      hb_itemParamStore( 1, pDefault );
+   if( pDefault && s_hb_itemTypeBasic( hb_param( 1, HB_IT_ANY ) ) != s_hb_itemTypeBasic( pDefault ))
+   	hb_itemParamStore( 1, pDefault );
+	hb_itemReturn( pDefault );
 }
 
 HB_FUNC( HB_DEFAULTVALUE )
@@ -113,10 +112,8 @@ HB_FUNC( HB_DEFAULTVALUE )
    PHB_ITEM pParam = hb_param( 1, HB_IT_ANY );
    PHB_ITEM pDefault = hb_param( 2, HB_IT_ANY );
 
-   if( pDefault &&
-       s_hb_itemTypeBasic( pParam ) != s_hb_itemTypeBasic( pDefault ) )
-      pParam = pDefault;
-
+   if( pDefault && s_hb_itemTypeBasic( pParam ) != s_hb_itemTypeBasic( pDefault ))
+		pParam = pDefault;
    hb_itemReturn( pParam );
 }
 
