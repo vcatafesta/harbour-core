@@ -52,7 +52,11 @@
 /* To suppress unused variable -w2 warnings. The code snippet will be
    optimized out by the compiler, so it won't cause any overhead.
    It can be used in codeblocks, too. */
-#define HB_SYMBOL_UNUSED( symbol )  ( ( symbol ) )
+//#define HB_SYMBOL_UNUSED( symbol )  ( ( symbol ) )
+#ytranslate HB_SYMBOL_UNUSED(  ,  [,  ] ) => ;
+                   HB_SYMBOL_UNUSED(  ) ;
+                 ; HB_SYMBOL_UNUSED(  ) ;
+               [ ; HB_SYMBOL_UNUSED(  ) ]
 
 #ifdef HB_CLP_STRICT
    #command END SEQUENCE      => end
@@ -249,9 +253,9 @@
 #command @ <top>, <left> TO <bottom>, <right> [COLOR <clr>] => ;
          DispBox( <top>, <left>, <bottom>, <right>, 1 [, <clr>] )
 #command @ <row>, <col> SAY <exp> [PICTURE <pic>] [COLOR <clr>] => ;
-         DevPos( <row>, <col> ) ; DevOutPict( <exp>, <pic> [, <clr>] )
+         DevPos( <row>, <col> ) ; DevOutPict(hb_utf8tostr(<exp>), <pic> [, <clr>] )
 #command @ <row>, <col> SAY <exp> [COLOR <clr>] => ;
-         DevPos( <row>, <col> ) ; DevOut( <exp> [, <clr>] )
+         DevPos( <row>, <col> ) ; DevOut(hb_utf8tostr(<exp>) [, <clr>] )
 #command @ <row>, <col> PROMPT <prompt> [MESSAGE <msg>] => ;
          __AtPrompt( <row>, <col>, <prompt> , <msg> )
 #command MENU TO <v> => ;

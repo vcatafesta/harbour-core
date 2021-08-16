@@ -100,11 +100,21 @@ static HB_IT_BASIC s_hb_itemTypeBasic( PHB_ITEM pItem )
 
 HB_FUNC( HB_DEFAULT )
 {
-   PHB_ITEM pDefault = hb_param( 2, HB_IT_ANY );
+	/*
+	PHB_ITEM pDefault = hb_param( 2, HB_IT_ANY );
 
    if( pDefault && s_hb_itemTypeBasic( hb_param( 1, HB_IT_ANY ) ) != s_hb_itemTypeBasic( pDefault ))
-   	hb_itemParamStore( 1, pDefault );
-	hb_itemReturn( pDefault );
+      hb_itemParamStore( 1, pDefault );	
+	*/
+	
+   PHB_ITEM pParam   = hb_param(1, HB_IT_ANY);
+   PHB_ITEM pDefault = hb_param(2, HB_IT_ANY);
+
+   if( pDefault && s_hb_itemTypeBasic( pParam ) != s_hb_itemTypeBasic( pDefault )){
+		hb_itemParamStore( 1, pDefault );
+		pParam = pDefault;
+	}
+	hb_itemReturn( pParam );		
 }
 
 HB_FUNC( HB_DEFAULTVALUE )
