@@ -252,12 +252,14 @@
          DispBox( <top>, <left>, <bottom>, <right>, 2 [, <clr>] )
 #command @ <top>, <left> TO <bottom>, <right> [COLOR <clr>] => ;
          DispBox( <top>, <left>, <bottom>, <right>, 1 [, <clr>] )
+
 //#command @ <row>, <col> SAY <exp> [PICTURE <pic>] [COLOR <clr>] => ;
-         //DevPos( <row>, <col> ) ; DevOutPict((<exp1>, <pic> [, <clr>] )
+         //DevPos( <row>, <col> ) ; DevOutPict(<exp>, <pic> [, <clr>] )
 //#command @ <row>, <col> SAY <exp> [PICTURE <pic>] [COLOR <clr>] => ;
-         //DevPos( <row>, <col> ) ; _exp1_ := tran(<exp>, <pic>); DevOutPict(hb_utf8tostr(_exp1_), <pic> [, <clr>] )
+         //DevPos( <row>, <col> ) ; DevOutPict(hb_utf8tostr(<exp>), <pic> [, <clr>] )
 #command @ <row>, <col> SAY <exp> [PICTURE <pic>] [COLOR <clr>] => ;
          DevPos( <row>, <col> ) ; _exp1_ := tran(<exp>, <pic>); DevOut(hb_utf8tostr(_exp1_) [, <clr>] )
+
 #command @ <row>, <col> SAY <exp> [COLOR <clr>] => ;
          DevPos( <row>, <col> ) ; DevOut(hb_utf8tostr(<exp>) [, <clr>] )
 #command @ <row>, <col> PROMPT <prompt> [MESSAGE <msg>] => ;
