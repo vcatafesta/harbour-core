@@ -52,7 +52,7 @@
 /* To suppress unused variable -w2 warnings. The code snippet will be
    optimized out by the compiler, so it won't cause any overhead.
    It can be used in codeblocks, too. */
-//#define HB_SYMBOL_UNUSED( symbol )  ( ( symbol ) )
+#define HB_SYMBOL_UNUSED( symbol )  ( ( symbol ) )
 #ytranslate HB_SYMBOL_UNUSED(  ,  [,  ] ) => ;
                    HB_SYMBOL_UNUSED(  ) ;
                  ; HB_SYMBOL_UNUSED(  ) ;
