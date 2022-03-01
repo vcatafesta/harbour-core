@@ -31,7 +31,10 @@
 #sudo apt-get install libexpat1-dev
 
 #ARCH
-#pacman -S freeimage ghostscript libfbclient libxslt unixodbc libmariadbclient gd rabbitmq libfbclient postgresql libcups
+#pacman -Sy valgrind binutils fakeroot upx uncrustify ncurses slang lib32-slang libx11
+#pacman -Sy lib32-gpm allegro4 cairo lib32-cairo libcups lib32-libcups libcurl-gnutls
+#pacman -Sy freeimage ghostscript libfbclient libxslt unixodbc libmariadbclient gd rabbitmq libfbclient postgresql libcups
+#pacman -Sy pcre pcre2 lib32-pcre lib32-pcre2 lzlib lib32-lzlib
 
 #export HB_COMPILER=clang
 #export HB_COMPILER=gcc
@@ -40,8 +43,8 @@ export HB_BUILD_VERBOSE=yes
 export HB_WITH_X11=no
 export HB_BUILD_STRIP=bin
 export HB_BUILD_ADDONS=yes
-export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
 #export HB_BUILD_MODE=c
+export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
 export HB_INSTALL_IMPLIB=yes
 export HB_BUILD_CONTRIB_DYN=yes
 #export HB_BUILD_CONTRIBS="hbcups hbhpdf hbct hbfship hbmemio hbmisc hbmzip hbnetio hbnf hbtip hbwin hbxpp hbzebra rddbm xhb hbblink hbct hbxpp xhb hboslib hbgt hbgzio"
