@@ -36,6 +36,13 @@
 #pacman -Sy freeimage ghostscript libfbclient libxslt unixodbc libmariadbclient gd rabbitmq libfbclient postgresql libcups
 #pacman -Sy pcre pcre2 lib32-pcre lib32-pcre2 lzlib lib32-lzlib
 
+#VOID LINUX
+#xbps-install icu-devel
+#xbps-install libcurl-devel
+#xbps-install firebird3
+#xbps-install rabbitmq-c-devel
+
+
 #export HB_COMPILER=clang
 #export HB_COMPILER=gcc
 export HB_INSTALL_PREFIX=/usr
@@ -43,8 +50,8 @@ export HB_BUILD_VERBOSE=yes
 export HB_WITH_X11=no
 export HB_BUILD_STRIP=bin
 export HB_BUILD_ADDONS=yes
-#export HB_BUILD_MODE=c
-export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
+export HB_BUILD_MODE=c
+#export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
 export HB_INSTALL_IMPLIB=yes
 export HB_BUILD_CONTRIB_DYN=yes
 #export HB_BUILD_CONTRIBS="hbcups hbhpdf hbct hbfship hbmemio hbmisc hbmzip hbnetio hbnf hbtip hbwin hbxpp hbzebra rddbm xhb hbblink hbct hbxpp xhb hboslib hbgt hbgzio"
@@ -81,6 +88,6 @@ echo $HB_BUILD_ADDONS
 #HB_WITH_X11= (on \*nix systems)
 #HB_WITH_ZLIB=C:\zlib (defaults to locally hosted copy if not found)
 
-make
+make -j$(nproc)
 sudo make install
 #make install DESTDIR=/home/vcatafesta/build/harbour-3.4

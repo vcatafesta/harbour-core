@@ -49,6 +49,10 @@
 
 /* #defines for DispBox() */
 
+#define FRAME_EMPTY     Replicate( Chr(255), 12 )
+#define B_NONE          ( Chr( 255 ) + Chr( 255 ) + Chr( 255 ) + Chr( 255 ) + ;
+                          Chr( 255 ) + Chr( 255 ) + Chr( 255 ) + Chr( 255 ))
+
 /* Single-line */
 #define B_SINGLE        ( Chr( 218 ) + Chr( 196 ) + Chr( 191 ) + Chr( 179 ) + ; /* "┌─┐│┘─└│" */
                           Chr( 217 ) + Chr( 196 ) + Chr( 192 ) + Chr( 179 ) + hb_UTF8ToStrBox("┬┴├┤"))
