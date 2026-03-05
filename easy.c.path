@@ -1,0 +1,134 @@
+--- a/contrib/hbcurl/easy.c
++++ b/contrib/hbcurl/easy.c
+@@ -408,7 +408,11 @@ void hb_curl_form_free( curl_httppost ** ptr )
+ {
+    if( ptr && *ptr )
+    {
++#if LIBCURL_VERSION_NUM >= 0x073800 /* 7.56.0 */
++      curl_mime_free( (curl_mime *) *ptr );
++#else
+       curl_formfree( *ptr );
++#endif
+       *ptr = NULL;
+    }
+ }
+@@ -494,7 +498,11 @@ void PHB_CURL_free( PHB_CURL hb_curl, HB_BOOL bClose )
+       curl_easy_setopt( hb_curl->curl, CURLOPT_HEADERFUNCTION, NULL );
+       curl_easy_setopt( hb_curl->curl, CURLOPT_WRITEFUNCTION, NULL );
+ 
++#if LIBCURL_VERSION_NUM >= 0x072000 /* 7.32.0 */
++      curl_easy_setopt( hb_curl->curl, CURLOPT_XFERINFOFUNCTION, NULL );
++#else
+       curl_easy_setopt( hb_curl->curl, CURLOPT_PROGRESSFUNCTION, NULL );
++#endif
+ 
+       curl_easy_setopt( hb_curl->curl, CURLOPT_READFUNCTION, NULL );
+       curl_easy_setopt( hb_curl->curl, CURLOPT_SEEKFUNCTION, NULL );
+@@ -498,7 +506,11 @@ void PHB_CURL_free( PHB_CURL hb_curl, HB_BOOL bClose )
+       curl_easy_setopt( hb_curl->curl, CURLOPT_SHARE, NULL );
+       curl_easy_setopt( hb_curl->curl, CURLOPT_PRIVATE, NULL );
+ 
++#if LIBCURL_VERSION_NUM >= 0x073800 /* 7.56.0 */
++      curl_easy_setopt( hb_curl->curl, CURLOPT_MIMEPOST, NULL );
++#else
+       curl_easy_setopt( hb_curl->curl, CURLOPT_HTTPPOST, NULL );
++#endif
+ 
+       if( hb_curl->pHTTPPOST_First )
+       {
+@@ -1028,7 +1040,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_VERIFYHOST, HB_CURL_OPT_BOOL( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x070B01 /* before 7.11.1 */
+       case HB_CURLOPT_DNS_USE_GLOBAL_CACHE:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_DNS_USE_GLOBAL_CACHE, HB_CURL_OPT_BOOL( 3 ) );
+          break;
++#endif
+@@ -1060,14 +1076,26 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_PROXYPORT, hb_parnl( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM >= 0x075500 /* 7.85.0 */
++      case HB_CURLOPT_PROTOCOLS:
++         res = curl_easy_setopt( hb_curl->curl, CURLOPT_PROTOCOLS_STR, hb_parc( 3 ) );
++         break;
++      case HB_CURLOPT_REDIR_PROTOCOLS:
++         res = curl_easy_setopt( hb_curl->curl, CURLOPT_REDIR_PROTOCOLS_STR, hb_parc( 3 ) );
++         break;
++#else
+       case HB_CURLOPT_PROTOCOLS:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_PROTOCOLS, hb_parnl( 3 ) );
+          break;
+       case HB_CURLOPT_REDIR_PROTOCOLS:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_REDIR_PROTOCOLS, hb_parnl( 3 ) );
+          break;
++#endif
+ 
+       case HB_CURLOPT_RESUME_FROM:
+@@ -1219,7 +1247,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_NOBODY, HB_CURL_OPT_BOOL( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x070C01 /* before 7.12.1 */
+       case HB_CURLOPT_PUT:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_PUT, HB_CURL_OPT_BOOL( 3 ) );
+          break;
++#endif
+ 
+       case HB_CURLOPT_UPLOAD:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_UPLOAD, HB_CURL_OPT_BOOL( 3 ) );
+@@ -1660,7 +1692,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_FTPPORT, hb_parc( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x071504 /* before 7.21.4 */
+       case HB_CURLOPT_FTP_RESPONSE_TIMEOUT:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_FTP_RESPONSE_TIMEOUT, hb_parnl( 3 ) );
+          break;
++#endif
+@@ -1911,7 +1947,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_SESSIONID_CACHE, HB_CURL_OPT_BOOL( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x075400 /* before 7.84.0 */
+       case HB_CURLOPT_RANDOM_FILE:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_RANDOM_FILE, hb_curl_StrHash( hb_curl, hb_parc( 3 ) ) );
+          break;
++#endif
+@@ -1914,7 +1954,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_CIPHER_LIST, hb_parc( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x075400 /* before 7.84.0 */
+       case HB_CURLOPT_EGDSOCKET:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_EGDSOCKET, hb_curl_StrHash( hb_curl, hb_parc( 3 ) ) );
+          break;
++#endif
+@@ -1927,7 +1971,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_MAX_SEND_SPEED_LARGE, (curl_off_t) hb_parnint( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x081100 /* before 8.17.0 */
+       case HB_CURLOPT_KRBLEVEL:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_KRBLEVEL, hb_curl_StrHash( hb_curl, hb_parc( 3 ) ) );
+          break;
++#endif
+@@ -1960,7 +2008,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_ENABLE_ALPN, HB_CURL_OPT_BOOL( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x075600 /* before 7.86.0 */
+       case HB_CURLOPT_SSL_ENABLE_NPN:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_ENABLE_NPN, hb_parnl( 3 ) );
+          break;
++#endif
+@@ -1975,7 +2027,11 @@ void HB_FUN_CURL_EASY_SETOPT( void )
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_TFTP_NO_OPTIONS, HB_CURL_OPT_BOOL( 3 ) );
+          break;
+ 
++#if LIBCURL_VERSION_NUM < 0x080F00 /* before 8.15.0 */
+       case HB_CURLOPT_SSL_FALSESTART:
+          res = curl_easy_setopt( hb_curl->curl, CURLOPT_SSL_FALSESTART, hb_parnl( 3 ) );
+          break;
++#endif

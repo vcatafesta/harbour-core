@@ -1,0 +1,30 @@
+--- contrib/hbnf/setdate.c
++++ contrib/hbnf/setdate.c
+@@ -73,11 +73,19 @@ HB_FUNC( FT_SETDATE )
+ #elif defined( HB_OS_LINUX ) && ! defined( HB_OS_ANDROID ) && ! defined( __WATCOMC__ )
+    {
+-      /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
+-      long lNewDate;
+-      time_t tm;
+-      lNewDate = lDate - hb_dateEncode( 1970, 1, 1 );
+-      tm = time( NULL );
+-      tm = lNewDate * 86400 + ( tm % 86400 );
+-      //fResult = stime( &tm ) == 0;
+-      fResult = clock_settime( CLOCK_REALTIME, &tm ) == 0;
++      struct timespec ts;
++      struct tm st;
++      long lNewDate = lDate - hb_dateEncode( 1970, 1, 1 );
++
++      st.tm_year = iYear - 1900;
++      st.tm_mon  = iMonth - 1;
++      st.tm_mday = iDay;
++      st.tm_hour = 0;
++      st.tm_min  = 0;
++      st.tm_sec  = 0;
++      st.tm_isdst = -1;
++
++      ts.tv_sec  = mktime( &st ) + lNewDate * 86400;
++      ts.tv_nsec = 0;
++
++      fResult = clock_settime( CLOCK_REALTIME, &ts ) == 0;
+    }

@@ -1166,7 +1166,8 @@ HB_FUNC( FI_ROTATECLASSIC )
    FIBITMAP * dib = hb_FIBITMAP_par( 1 );
 
    if( dib && HB_ISNUM( 2 ) )
-      hb_FIBITMAP_ret( FreeImage_RotateClassic( dib, hb_parnd( 2 ) /* angle */ ), HB_TRUE );
+//    hb_FIBITMAP_ret( FreeImage_RotateClassic( dib, hb_parnd( 2 ) /* angle */ ), HB_TRUE );
+      hb_FIBITMAP_ret( FreeImage_Rotate( dib, hb_parnd( 2 ) /* angle */ ), HB_TRUE );
    else
       hb_errRT_BASE_SubstR( EG_ARG, 0, NULL, HB_ERR_FUNCNAME, HB_ERR_ARGS_BASEPARAMS );
 }

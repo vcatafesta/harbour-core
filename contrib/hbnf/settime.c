@@ -65,17 +65,35 @@ HB_FUNC( FT_SETTIME )
       st.wMilliseconds = ( WORD ) iMillisec * 10;
       fResult = SetLocalTime( &st );
    }
+//#elif defined( HB_OS_LINUX ) && ! defined( HB_OS_ANDROID ) && ! defined( __WATCOMC__ )
+//   {
+//      /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
+//      HB_ULONG lNewTime;
+//      time_t   tm;
+//
+//      lNewTime = iHour * 3600 + iMinute * 60 + iSeconds;
+//      tm       = time( NULL );
+//      tm      += lNewTime - ( tm % 86400 );
+//      //fResult  = stime( &tm ) == 0;
+//      fResult  = clock_settime(CLOCK_REALTIME, &tm ) == 0;
+//   }
 #elif defined( HB_OS_LINUX ) && ! defined( HB_OS_ANDROID ) && ! defined( __WATCOMC__ )
    {
-      /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
-      HB_ULONG lNewTime;
-      time_t   tm;
+      struct timespec ts;
+      struct tm st;
 
-      lNewTime = iHour * 3600 + iMinute * 60 + iSeconds;
-      tm       = time( NULL );
-      tm      += lNewTime - ( tm % 86400 );
-      //fResult  = stime( &tm ) == 0;
-      fResult  = clock_settime(CLOCK_REALTIME, &tm ) == 0;
+      st.tm_year = 100;
+      st.tm_mon  = 0;
+      st.tm_mday = 1;
+      st.tm_hour = iHour;
+      st.tm_min  = iMinute;
+      st.tm_sec  = iSeconds;
+      st.tm_isdst = -1;
+
+      ts.tv_sec  = mktime(&st);
+      ts.tv_nsec = 0;
+
+      fResult = clock_settime(CLOCK_REALTIME, &ts) == 0;
    }
 #elif defined( HB_OS_DOS )
    {

@@ -78,7 +78,14 @@
 #endif
 
 #if defined( HB_SIGNAL_EXCEPTION_HANDLER )
-   static HB_BYTE * s_signal_stack[ SIGSTKSZ ];
+   //static HB_BYTE * s_signal_stack[ SIGSTKSZ ];
+   //SIGSTKSZ não é uma constante de tempo de compilação em algumas implementações do glibc moderno
+   // (especialmente no Linux com GCC 12+). O GCC agora exige que o tamanho de arrays estáticos seja
+   // uma expressão constante integral — e SIGSTKSZ é definido como uma expressão runtime, não uma constante.
+
+   // Nova implementacao
+   #define HB_SIGSTKSZ   (8 * 1024)  // 8 KB (valor padrão do SIGSTKSZ em glibc)
+   static HB_BYTE s_signal_stack[ HB_SIGSTKSZ ];
 #endif
 
 #if defined( HB_OS_WIN )

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #Linux (.deb based distros: Debian, Ubuntu)
 #You'll need these base packages to build/package/test/use Harbour:
 #sudo apt-get install bash git gcc binutils fakeroot debhelper valgrind upx uncrustify
@@ -31,10 +32,11 @@
 #sudo apt-get install libexpat1-dev
 
 #ARCH
-#pacman -Sy valgrind binutils fakeroot upx uncrustify ncurses slang lib32-slang libx11
-#pacman -Sy lib32-gpm allegro4 cairo lib32-cairo libcups lib32-libcups libcurl-gnutls
-#pacman -Sy freeimage ghostscript libfbclient libxslt unixodbc libmariadbclient gd rabbitmq libfbclient postgresql libcups
-#pacman -Sy pcre pcre2 lib32-pcre lib32-pcre2 lzlib lib32-lzlib
+#sudo pacman -Sy --needed valgrind binutils fakeroot upx uncrustify ncurses slang lib32-slang libx11 \
+#   lib32-gpm allegro4 cairo lib32-cairo libcups lib32-libcups libcurl-gnutls \
+#   ghostscript libfbclient libxslt unixodbc libmariadbclient gd rabbitmq libfbclient postgresql libcups \
+#   pcre pcre2 lib32-pcre lib32-pcre2 lzlib librabbitmq-c
+#paru -S aur/freeimage aur/lib32-lzlib
 
 #VOID LINUX
 #xbps-install icu-devel
@@ -42,26 +44,37 @@
 #xbps-install firebird3
 #xbps-install rabbitmq-c-devel
 
-
 #export HB_COMPILER=clang
 #export HB_COMPILER=gcc
 export HB_INSTALL_PREFIX=/usr
-export HB_BUILD_VERBOSE=yes
+#export HB_BUILD_VERBOSE=yes
+export HB_BUILD_VERBOSE=no
 export HB_WITH_X11=no
-export HB_BUILD_STRIP=bin
-export HB_BUILD_ADDONS=yes
-export HB_BUILD_MODE=c
-#export HB_BUILD_MODE=cpp 	# Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
-export HB_INSTALL_IMPLIB=yes
-export HB_BUILD_CONTRIB_DYN=yes
+export HB_BUILD_STRIP=bin         # [all|bin|lib|no] Tirar símbolos e depurar informações de binários. Padrão: no
+export HB_BUILD_ADDONS=yes        # Criar espaço separado lista de .hbp adicional projetos.
+export HB_BUILD_OPTIM=yes         # Habilitar otimizações de compilador C. Padrão: yes
+export HB_BUILD_MODE=c            # Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
+#export HB_BUILD_MODE=cpp 	      # Change default build mode to C++ or C. Default: c, except for msvc* compilers, where it's cpp.
+export HB_INSTALL_IMPLIB=yes      # Copiar bibliotecas de importação criadas para .dll externo dependências para a biblioteca instalar diretório em installfase de construção. Padrão: yesApenas para alvos do Windows/OS/2. Por favor, note que esse recurso não funciona com todos os possíveis distribuições binárias de pacotes de terceiros. Testamos apenas os oficiais/mainstream. Também observe que os implibs gerados exigirão .dlls compatível com os utilizados no tempo de construção.
+export HB_BUILD_CONTRIB_DYN=yes   # Crie bibliotecas dinâmicas de contrib. Padrão: yes
+export HB_BUILD_DYN=yes           #  Crie bibliotecas dinâmicas Harbour. Padrão: yes
+#export HB_BUILD_CONTRIBS=no      # Não construa nenhum espaço, ou espaço separado <l>lista de, contrib pacotes. Por favor, note que não vai impedir construção de pacotes que são dependências de outros pacotes – habilitados –.
+#export HB_BUILD_CONTRIBS=        # Construir espaço separado <l>lista de contrib bibliotecas. Construa tudo se deixado vazio (padrão).
 #export HB_BUILD_CONTRIBS="hbcups hbhpdf hbct hbfship hbmemio hbmisc hbmzip hbnetio hbnf hbtip hbwin hbxpp hbzebra rddbm xhb hbblink hbct hbxpp xhb hboslib hbgt hbgzio"
-export HB_BUILD_CONTRIBS=
-export HB_BUILD_SHARED=yes
+export HB_BUILD_CONTRIBS="$(ls contrib/ | grep -v -E '^(hbcurl|hbssl)$' | tr '\n' ' ' | tr '/' ' ' )"
+export HB_BUILD_SHARED=yes        # Crie executáveis Harbour no modo compartilhado. Padrão: yes quando HB_INSTALL_PREFIX pontos para uma localização do sistema *nix, caso contrário no.
 export HB_INSTALL_DOC=yes
+export HB_BUILD_3RDEXT=yes        # Habilitar a detecção automática de componentes de terceiros em locais padrão do sistema. Padrão: yes
+export HB_BUILD_NAME=linux        # Criar compilação nomeada. Isso permite manter várias compilações em paralelo para qualquer dada plataforma/compilador. F.e. debug / release.
+export HB_BUILD_DEBUG=no          # Criar uma compilação de depuração. Padrão: no
+#export HB_BUILD_PARTS=all         # [all|compiler|lib] Construa apenas parte específica do Porto.
+#export HB_BUILD_PARTS=compiler    # [all|compiler|lib] Construa apenas parte específica do Porto.
+export HB_BUILD_PARTS=lib         # [all|compiler|lib] Construa apenas parte específica do Porto.
 
-echo $HB_BUILD_MODE
-echo $HB_BUILD_CONTRIBS
-echo $HB_BUILD_ADDONS
+
+echo "HB_BUILD_MODE     : $HB_BUILD_MODE"
+echo "HB_BUILD_CONTRIBS : $HB_BUILD_CONTRIBS"
+echo "HB_BUILD_ADDONS   : $HB_BUILD_ADDONS"
 
 # How to Create Packages for Distribution
 # Source .tgz on *nix
@@ -77,7 +90,6 @@ echo $HB_BUILD_ADDONS
 #Binary .rpm on Linux
 	#package/mpkg_rpm.sh
 
-
 #HB_WITH_CURSES= (on \*nix systems and DJGPP, auto-detected on both)
 #HB_WITH_GPM= (on Linux only)
 ##HB_WITH_PCRE2=C:\pcre2 (defaults to locally hosted copy if not found)
@@ -87,7 +99,13 @@ echo $HB_BUILD_ADDONS
 #HB_WITH_WATT= (on MS-DOS systems)
 #HB_WITH_X11= (on \*nix systems)
 #HB_WITH_ZLIB=C:\zlib (defaults to locally hosted copy if not found)
+export HB_WITH_QT=/usr/include/qt/
+export HBMK_WITH_QT=/usr/include/qt/
 
-make -j$(nproc)
-sudo make install
-#make install DESTDIR=/home/vcatafesta/build/harbour-3.4
+
+if make -j$(nproc) > log.txt 2>&1; then
+  sudo mkdir /usr/lib64/harbour
+  sudo make install
+  mkdir /home/vcatafesta/build/harbour-3.4
+  sudo make install DESTDIR=/home/vcatafesta/build/harbour-3.4
+fi
